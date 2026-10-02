@@ -21,7 +21,7 @@ Masfa is a web browser for iPhone built around intention. Every search and websi
 
 Need help, found a bug, or have a site that was blocked by mistake?
 
-- **Email:** [your support email]
+- **Email:** rafansyed30@gmail.com
 - **Report an issue:** open an issue in this repository's **Issues** tab
 - **Response time:** I aim to reply within [2–3 business days]
 
@@ -64,8 +64,7 @@ To decide whether a site or search is appropriate, Masfa sends the domain, addre
 
 - **Stored on your device:** favorites, lockdown timer
 - **Sent to the service:** domains and search text being checked, and sites you choose to block
-- **Not collected:** [name, email, contacts, location. Edit to match what your service actually does]
-
+- **Not collected:** name, email, contacts, location.
 Full details: [link to your privacy policy, e.g. PRIVACY.md in this repo]
 
 ---
@@ -76,4 +75,4 @@ Masfa is one layer of a broader plan, not a guarantee. Content classification ca
 
 ---
 
-© [year] [your name]. All rights reserved.
+© [2026] [Mafsa]. All rights reserved.
