@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		D4D600C8306FFA83005A9A4A /* Pure Path Browser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pure Path Browser.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4D600C8306FFA83005A9A4A /* Masfa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Masfa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,7 +40,7 @@
 		D4D600C9306FFA83005A9A4A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D4D600C8306FFA83005A9A4A /* Pure Path Browser.app */,
+				D4D600C8306FFA83005A9A4A /* Masfa.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D4D600C7306FFA83005A9A4A /* Pure Path Browser */ = {
+		D4D600C7306FFA83005A9A4A /* Masfa */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D4D600D3306FFA85005A9A4A /* Build configuration list for PBXNativeTarget "Pure Path Browser" */;
+			buildConfigurationList = D4D600D3306FFA85005A9A4A /* Build configuration list for PBXNativeTarget "Masfa" */;
 			buildPhases = (
 				D4D600C4306FFA83005A9A4A /* Sources */,
 				D4D600C5306FFA83005A9A4A /* Frameworks */,
@@ -63,11 +63,11 @@
 			fileSystemSynchronizedGroups = (
 				D4D600CA306FFA83005A9A4A /* Pure Path Browser */,
 			);
-			name = "Pure Path Browser";
+			name = Masfa;
 			packageProductDependencies = (
 			);
 			productName = "Pure Path Browser";
-			productReference = D4D600C8306FFA83005A9A4A /* Pure Path Browser.app */;
+			productReference = D4D600C8306FFA83005A9A4A /* Masfa.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D4D600C3306FFA83005A9A4A /* Build configuration list for PBXProject "Pure Path Browser" */;
+			buildConfigurationList = D4D600C3306FFA83005A9A4A /* Build configuration list for PBXProject "Masfa" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D4D600C7306FFA83005A9A4A /* Pure Path Browser */,
+				D4D600C7306FFA83005A9A4A /* Masfa */,
 			);
 		};
 /* End PBXProject section */
@@ -332,7 +332,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D4D600C3306FFA83005A9A4A /* Build configuration list for PBXProject "Pure Path Browser" */ = {
+		D4D600C3306FFA83005A9A4A /* Build configuration list for PBXProject "Masfa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D4D600D1306FFA85005A9A4A /* Debug */,
@@ -341,7 +341,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D4D600D3306FFA85005A9A4A /* Build configuration list for PBXNativeTarget "Pure Path Browser" */ = {
+		D4D600D3306FFA85005A9A4A /* Build configuration list for PBXNativeTarget "Masfa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D4D600D4306FFA85005A9A4A /* Debug */,
