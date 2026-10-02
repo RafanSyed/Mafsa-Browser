@@ -30,6 +30,7 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable,
     @Published var title = "New Tab"
     @Published var canGoBack = false
     @Published var canGoForward = false
+    @Published var showStart = true      // true = show the favorites page instead of the web view
 
     // Set by BrowserModel
     var onOpenNewTab: ((URLRequest) -> Void)?
@@ -427,9 +428,10 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable,
             .store(in: &cancellables)
 
         if let initialRequest {
+            showStart = false
             webView.load(initialRequest)       // still goes through decidePolicyFor
         } else {
-            go("google.com")
+            showStart = true                   // new tab opens on the favorites page
         }
     }
 
@@ -444,6 +446,7 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable,
     func go(_ input: String) {
         let t = input.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !t.isEmpty else { return }
+        showStart = false
 
         if let url = URL(string: t), let scheme = url.scheme, scheme.hasPrefix("http") {
             webView.load(URLRequest(url: url))
@@ -583,15 +586,20 @@ struct TabChip: View {
 
 struct AddressBar: View {
     @ObservedObject var tab: BrowserTab
+    @ObservedObject private var favorites = FavoritesStore.shared
     @State private var showInfo = false
+
+    private var isFavorite: Bool { favorites.contains(tab.address) }
+    private var hasSite: Bool { !tab.showStart && URL(string: tab.address)?.host != nil }
 
     var body: some View {
         HStack(spacing: 8) {
             Button { tab.webView.goBack() } label: { Image(systemName: "chevron.left") }
-                .disabled(!tab.canGoBack)
+                .disabled(!tab.canGoBack || tab.showStart)
             Button { tab.webView.goForward() } label: { Image(systemName: "chevron.right") }
-                .disabled(!tab.canGoForward)
+                .disabled(!tab.canGoForward || tab.showStart)
             Button { tab.webView.reload() } label: { Image(systemName: "arrow.clockwise") }
+                .disabled(tab.showStart)
             TextField("Search or enter URL", text: $tab.address)
                 .textFieldStyle(.roundedBorder)
                 #if os(iOS)
@@ -601,7 +609,14 @@ struct AddressBar: View {
                 #endif
                 .onSubmit { tab.go(tab.address) }
 
+            Button { favorites.toggle(tab.address) } label: {
+                Image(systemName: isFavorite ? "heart.fill" : "heart")
+                    .foregroundColor(isFavorite ? Theme.danger : .primary)
+            }
+            .disabled(!hasSite)
+
             Button { showInfo = true } label: { Image(systemName: "shield.lefthalf.filled") }
+                .disabled(!hasSite)
                 #if os(macOS)
                 .popover(isPresented: $showInfo, arrowEdge: .bottom) {
                     SiteInfoView(tab: tab).frame(width: 320, height: 380)
@@ -612,6 +627,24 @@ struct AddressBar: View {
                 }
                 #endif
         }
+    }
+}
+
+// Shows either the favorites page or the web view for one tab
+struct TabContent: View {
+    @ObservedObject var tab: BrowserTab
+
+    var body: some View {
+        ZStack {
+            BrowserView(webView: tab.webView)
+                .opacity(tab.showStart ? 0 : 1)
+            if tab.showStart {
+                StartPageView(tab: tab)
+            }
+        }
+        // Lets content run under the home-indicator area. Scroll views still inset
+        // themselves automatically, so nothing important gets covered.
+        .ignoresSafeArea(.container, edges: .bottom)
     }
 }
 
@@ -643,7 +676,7 @@ struct ContentView: View {
                 AddressBar(tab: tab)
                     .padding(8)
                     .id(tab.id)
-                BrowserView(webView: tab.webView)
+                TabContent(tab: tab)
                     .id(tab.id)
             }
         }
