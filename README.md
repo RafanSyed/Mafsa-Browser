@@ -65,7 +65,7 @@ To decide whether a site or search is appropriate, Masfa sends the domain, addre
 - **Stored on your device:** favorites, lockdown timer
 - **Sent to the service:** domains and search text being checked, and sites you choose to block
 - **Not collected:** name, email, contacts, location.
-Full details: [link to your privacy policy, e.g. PRIVACY.md in this repo]
+Full details: https://github.com/RafanSyed/Mafsa-Browser/blob/main/PRIVACYPOLICY.md
 
 ---
 
