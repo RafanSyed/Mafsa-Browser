@@ -31,6 +31,9 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable,
     @Published var canGoBack = false
     @Published var canGoForward = false
     @Published var showStart = true      // true = show the favorites page instead of the web view
+    @Published var progress: Double = 0
+    @Published var isLoading = false
+    @Published var isChecking = false     // true while Masfa's own check is running
 
     // Set by BrowserModel
     var onOpenNewTab: ((URLRequest) -> Void)?
@@ -378,6 +381,7 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable,
 
     init(initialRequest: URLRequest? = nil) {
         let config = WKWebViewConfiguration()
+        config.applicationNameForUserAgent = "Version/18.0 Safari/604.1"
         #if os(iOS)
         config.allowsInlineMediaPlayback = true     // play in the page, not fullscreen
         #endif
@@ -426,7 +430,14 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable,
         webView.publisher(for: \.canGoForward)
             .sink { [weak self] v in self?.canGoForward = v }
             .store(in: &cancellables)
-
+        webView.publisher(for: \.estimatedProgress)
+            .sink { [weak self] p in self?.progress = p }
+            .store(in: &cancellables)
+        webView.publisher(for: \.isLoading)
+            .sink { [weak self] v in self?.isLoading = v }
+            .store(in: &cancellables)
+        
+        
         if let initialRequest {
             showStart = false
             webView.load(initialRequest)       // still goes through decidePolicyFor
@@ -468,7 +479,9 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable,
               let url = action.request.url,
               url.scheme == "http" || url.scheme == "https" else { return .allow }
 
+        isChecking = true
         let verdict = await GuardianEngine.shared.check(url)
+        isChecking = false
         if case .allow = verdict { return .allow }
 
         // Load the block page after this callback returns, so the cancel doesn't clobber it
@@ -672,14 +685,37 @@ struct ContentView: View {
             .padding(.top, 6)
 
             // Selected tab
+            // Selected tab
             if let tab = model.selectedTab {
                 AddressBar(tab: tab)
                     .padding(8)
+                    .id(tab.id)
+                LoadingBar(tab: tab)          // <-- add this
                     .id(tab.id)
                 TabContent(tab: tab)
                     .id(tab.id)
             }
         }
+    }
+}
+
+struct LoadingBar: View {
+    @ObservedObject var tab: BrowserTab
+
+    private var visible: Bool { tab.isLoading || tab.isChecking }
+    // While Masfa is checking, show a small sliver so it's clear something is happening
+    private var shown: Double { tab.isChecking ? max(tab.progress, 0.08) : tab.progress }
+
+    var body: some View {
+        GeometryReader { geo in
+            Rectangle()
+                .fill(Color(red: 0.22, green: 0.36, blue: 0.62))
+                .frame(width: geo.size.width * CGFloat(shown))
+                .animation(.easeOut(duration: 0.25), value: shown)
+                .opacity(visible ? 1 : 0)
+                .animation(.easeOut(duration: 0.3), value: visible)
+        }
+        .frame(height: 2)
     }
 }
 

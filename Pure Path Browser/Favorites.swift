@@ -25,7 +25,7 @@ final class FavoritesStore: ObservableObject {
     static let shared = FavoritesStore()
 
     @Published private(set) var items: [Favorite] = []
-    private let storageKey = "favorites.v2"
+    private let storageKey = "favorites.v3"
 
     private init() {
         if let data = UserDefaults.standard.data(forKey: storageKey),
@@ -35,11 +35,6 @@ final class FavoritesStore: ObservableObject {
             items = [
                 Favorite(name: "Google", urlString: "https://www.google.com"),
                 Favorite(name: "YouTube", urlString: "https://www.youtube.com"),
-                Favorite(name: "Spotify", urlString: "https://open.spotify.com"),
-                Favorite(name: "Kufah", urlString: "https://kufah.org"),
-                Favorite(name: "IslamQA", urlString: "https://islamqa.org"),
-                Favorite(name: "One Piece Chapters", urlString: "http://tcbonepiecechapters.com/"),
-                Favorite(name: "ISONET", urlString: "https://www.newtampamasjid.org/prayer-schedule"),
             ]
             save()
         }

@@ -1,13 +1,13 @@
 //
 //  SiteInfoView.swift
-//  Pure Path Browser
+//  Masfa
 //
 //  Created by Rafan Syed on 10/2/26.
 //
 
 import SwiftUI
 
-// MARK: - Theme (from popup.css)
+// MARK: - Theme
 
 extension Color {
     init(hex: UInt32, opacity: Double = 1) {
@@ -20,16 +20,16 @@ extension Color {
 }
 
 enum Theme {
-    static let tan = Color(hex: 0xEFE6D6)
-    static let card = Color(hex: 0xFBF6EC)
-    static let ink = Color(hex: 0x2B2621)
-    static let inkSoft = Color(hex: 0x5C5348)
-    static let moss = Color(hex: 0x6B7A5E)
-    static let mossDark = Color(hex: 0x4F5C45)
-    static let clay = Color(hex: 0xA97452)
-    static let danger = Color(hex: 0xB4432E)
-    static let dangerDark = Color(hex: 0x93341F)
-    static let line = Color(hex: 0xDCD0BC)
+    static let bg = Color(hex: 0xF4F6F9)         // Light night-blue tinted background
+    static let card = Color(hex: 0xFFFFFF)       // Pure white card
+    static let ink = Color(hex: 0x0B1D3A)        // Deep night blue primary text
+    static let inkSoft = Color(hex: 0x3B4B66)    // Muted slate text
+    static let navy = Color(hex: 0x0B1D3A)       // Primary brand blue
+    static let accent = Color(hex: 0x1D3557)     // Mid-tone accent blue
+    static let amber = Color(hex: 0xC07D2B)      // Warm amber accent
+    static let danger = Color(hex: 0xC93B2B)     // Danger red for block actions
+    static let dangerDark = Color(hex: 0x8F2116)
+    static let line = Color(hex: 0xE1E6EC)       // Soft border line
 }
 
 // MARK: - Popup
@@ -65,7 +65,7 @@ struct SiteInfoView: View {
 
     var body: some View {
         ZStack {
-            Theme.tan.ignoresSafeArea()
+            Theme.bg.ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: 16) {
                 header
@@ -82,14 +82,14 @@ struct SiteInfoView: View {
     private var header: some View {
         HStack(spacing: 10) {
             ZStack {
-                Circle().fill(Theme.moss).frame(width: 26, height: 26)
-                Image(systemName: "shield")
-                    .font(.system(size: 12, weight: .bold))
+                Circle().fill(Theme.navy).frame(width: 26, height: 26)
+                Image(systemName: "shield.fill")
+                    .font(.system(size: 11, weight: .bold))
                     .foregroundColor(Theme.card)
             }
-            Text("Pure Path")
-                .font(.system(size: 14, weight: .bold))
-                .foregroundColor(Theme.ink)
+            Text("Masfa")
+                .font(.system(size: 15, weight: .bold))
+                .foregroundColor(Theme.navy)
         }
     }
 
@@ -119,10 +119,10 @@ struct SiteInfoView: View {
             if let toast {
                 Text(toast)
                     .font(.system(size: 12))
-                    .foregroundColor(Theme.mossDark)
+                    .foregroundColor(Theme.navy)
                     .frame(maxWidth: .infinity)
                     .padding(8)
-                    .background(Theme.moss.opacity(0.1))
+                    .background(Theme.navy.opacity(0.06))
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .padding(.top, 12)
             }
@@ -141,8 +141,8 @@ struct SiteInfoView: View {
         } else {
             switch filter {
             case "BLOCKED": badge("🚫 Blocked", fg: Theme.dangerDark, bg: Theme.danger.opacity(0.12))
-            case "SAFE":    badge("✅ Permanently safe", fg: Theme.mossDark, bg: Theme.moss.opacity(0.14))
-            case "OKAY":    badge("🟡 Okay (path checked)", fg: Theme.clay, bg: Theme.clay.opacity(0.14))
+            case "SAFE":    badge("✅ Permanently safe", fg: Theme.accent, bg: Theme.accent.opacity(0.12))
+            case "OKAY":    badge("🟡 Okay (path checked)", fg: Theme.amber, bg: Theme.amber.opacity(0.14))
             default:        badge("❔ Not tracked yet", fg: Theme.inkSoft, bg: Theme.inkSoft.opacity(0.1))
             }
         }
@@ -216,7 +216,7 @@ struct SiteInfoView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
-        .background(Theme.ink.opacity(0.03))
+        .background(Theme.navy.opacity(0.03))
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Theme.line, lineWidth: 1))
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
@@ -264,9 +264,9 @@ struct SiteInfoView: View {
             await flash("\"\(domain)\" has been blocked")
             await loadStats()
 
-            // Replace the page with the block page (doesn't count toward lockdown)
+            // Replace the page with the block page
             if let url = pageURL {
-                tab.show(.block(reason: "Manually blocked via Pure Path"), for: url)
+                tab.show(.block(reason: "Manually blocked via Masfa"), for: url)
             }
             try? await Task.sleep(nanoseconds: 900_000_000)
             dismiss()
